@@ -27,7 +27,7 @@ void Desenha(void)
 
     glRotatef(rotationY, 1.0, 0.0, 0.0);
     glRotatef(rotationX, 0.0, 1.0, 0.0);
-    Cubos *cube = new Cubos(7);
+    Cubos *cube = new Cubos(6);
     cube->inicializarCubos();
 
     //    glutSolidCube(1)

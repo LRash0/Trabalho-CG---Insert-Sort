@@ -1,6 +1,9 @@
 //Manipulando os metodos da classe Cubos aqui
 #include <GL/glut.h>
+#include <string>
 #include "cubos.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 
 Cubos::Cubos(int qtdCubos)
@@ -102,9 +105,15 @@ void Cubos::criarPrimeiroCubo()
 
 void Cubos::criarCubos(Cubos *tmpCubo)
 {
+    //Metodo para escrever
+    std::string s = std::to_string(10);
+    char const * pchar = s.c_str();
+
     glPushMatrix();
         glTranslated(tmpCubo->getPosX(),tmpCubo->getPosY(),tmpCubo->getPosZ());
         glutSolidCube(1);
+        glRasterPos3f(tmpCubo->getPosX(),tmpCubo->getPosY() + 10,tmpCubo->getPosZ());
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10,*(pchar));
     glPopMatrix();
 
 }

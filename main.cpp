@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include "cubos.h"
 #define LARGURA 600
 #define ALTURA 600
 
@@ -26,7 +27,10 @@ void Desenha(void)
 
     glRotatef(rotationY, 1.0, 0.0, 0.0);
     glRotatef(rotationX, 0.0, 1.0, 0.0);
-    glutSolidCube(1);
+    Cubos *cube = new Cubos(7);
+    cube->inicializarCubos();
+
+    //    glutSolidCube(1)
     glFlush();
 
 
@@ -90,7 +94,7 @@ void Inicializa(void)
     //Modo de projecao ortogonal
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(40.f,((GLfloat)LARGURA/(GLfloat)ALTURA), 1, 50.0f);
+    gluPerspective(80.0f,((GLfloat)LARGURA/(GLfloat)ALTURA), 1, 600.0f);
 
     /* Habilita o uso de iluminação */
     glEnable(GL_LIGHTING);

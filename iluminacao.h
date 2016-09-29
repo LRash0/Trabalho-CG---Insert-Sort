@@ -1,3 +1,4 @@
+//Classe iluminacao
 #ifndef ILUMINACAO_H
 #define ILUMINACAO_H
 

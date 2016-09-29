@@ -1,3 +1,4 @@
+//Classe do metodo sort
 #ifndef SORT_H
 #define SORT_H
 

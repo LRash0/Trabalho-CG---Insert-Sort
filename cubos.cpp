@@ -18,7 +18,8 @@ Cubos::Cubos(int data,float x,float y,float z)
     this->x = x;
     this->y = y;
     this->z = z;
-    this->posX = this->posY = this->posZ = 0;
+    this->posX = this->posY = this->posZ = 1;
+
 
 }
 
@@ -44,11 +45,43 @@ void Cubos::escrever()
 
 }
 
-void Cubos::setTranslate(float posX,float posY,float posZ)
+
+void Cubos::insertSort()
 {
-    this->posX = posX;
-    this->posY = posY;
-    this->posZ = posZ;
+
+}
+
+
+void Cubos::setTranslateFrente(float posX,float posY,float posZ)
+{
+
+
+
+}
+
+void Cubos::setTranslateTras(float posX, float posY, float posZ)
+{
+    if(z==-5){
+        this->posZ = 0;
+    }
+
+    if(this->x==posX){
+        this->posX = 0;
+        this->posZ = 1;
+    }
+
+    if(z==0){
+        this->posZ = 0;
+    }
+
+    this->z += this->posZ*-1;
+    this->x += this->posX*1;
+
+}
+
+void Cubos::setData(int data)
+{
+    this->data = data;
 }
 
 float Cubos::getX()

@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include <iostream>
 #include "cubos.h"
 #define LARGURA 600
 #define ALTURA 600
@@ -6,12 +7,46 @@
 const int tamanho = 4;
 int last_press_x = 0;
 int last_press_y = 0;
+int i = 1;
+int j = 0;
+float tmpI;
+float tmpJ;
+bool swapping = true;
+bool trocarPosicoes = false;
 
 double rotationX = 20.0;
 double rotationY = 20.0;
 Cubos teste[tamanho];
 
 using namespace std;
+
+void ordenacao()
+{
+    for (;i < tamanho; i++)
+    {
+        int atual = teste[i].getData();
+        j = i - 1;
+
+        while ((j >= 0) && (atual < teste[j].getData()))
+        {
+            //Se tiver swap,saia;
+            swapping = false;
+            trocarPosicoes = true;
+
+
+            //                original[j + 1] = original[j];
+            teste[j+1].setData(teste[j].getData());
+
+            j = j - 1;
+        }
+        //Se tiver swap,saia;
+        //            original[j + 1] = atual;
+        teste[j+1].setData(atual);
+    }
+
+}
+
+
 
 void Desenha(void)
 {
@@ -31,6 +66,28 @@ void Desenha(void)
     for(int i = 0 ; i < tamanho ; i++){
         teste[i].drawCube();
     }
+
+    //Enquanto não tiver swap,faça;
+    if(swapping){
+        ordenacao();
+    }
+
+    //Guardar as posicoes para trocar
+    if(trocarPosicoes){
+        tmpI = teste[i].getX();
+        tmpJ = teste[j].getX();
+        cout << "TMPI:" << tmpI << endl;
+        cout << "TPMJ"  << tmpJ << endl;
+        trocarPosicoes = false;
+    }
+
+    if(swapping){
+
+
+    }
+
+
+
     glFlush();
 
 

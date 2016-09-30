@@ -15,14 +15,18 @@ class Cubos
         void insertSort();
         void escrever();
         void drawCube();
+        bool setXDireita(float);
+        bool setXEsquerda(float);
+        bool setZFrente(float);
+        bool setZTras(float);
+        bool resetZTras();
+        bool resetZFrente();
         float getX();
         float getY();
         float getZ();
         int data;
         int getData();
-        float NovaPosicao;
-        void setNovaPosicao(float);
-        float getNovaPosicao;
+
 
 
 

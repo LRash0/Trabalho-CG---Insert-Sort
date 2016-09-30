@@ -18,7 +18,7 @@ Cubos::Cubos(int data,float x,float y,float z)
     this->x = x;
     this->y = y;
     this->z = z;
-    this->posX = this->posY = this->posZ = 1;
+    this->posX = this->posY = this->posZ = 0;
 
 
 }
@@ -28,7 +28,7 @@ void Cubos::drawCube()
     this->posX += posX;
     this->posZ += posZ;
     glPushMatrix();
-        glTranslatef(x,y,z);
+        glTranslatef(x ,y,z);
         glutSolidCube(2);
         escrever();
     glPopMatrix();
@@ -39,45 +39,13 @@ void Cubos::escrever()
     std::string s = std::to_string(this->getData());
     char const * pchar = s.c_str();
     glRasterPos3f(0.0,this->getY() + 2,this->getZ());
-    for(int i = 0 ; i < s.size() ; ++i){
+    for(unsigned  int i = 0 ; i < s.size() ; ++i){
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10,pchar[i]);
     }
 
 }
 
 
-void Cubos::insertSort()
-{
-
-}
-
-
-void Cubos::setTranslateFrente(float posX,float posY,float posZ)
-{
-
-
-
-}
-
-void Cubos::setTranslateTras(float posX, float posY, float posZ)
-{
-    if(z==-5){
-        this->posZ = 0;
-    }
-
-    if(this->x==posX){
-        this->posX = 0;
-        this->posZ = 1;
-    }
-
-    if(z==0){
-        this->posZ = 0;
-    }
-
-    this->z += this->posZ*-1;
-    this->x += this->posX*1;
-
-}
 
 void Cubos::setData(int data)
 {
@@ -103,3 +71,62 @@ int Cubos::getData()
     return data;
 }
 
+bool Cubos::setXDireita(float novaPosicao)
+{
+    if(this->x!=novaPosicao){
+        this->x++;
+        return false;
+    }
+    if(this->x==novaPosicao){
+        return true;
+    }
+}
+
+bool Cubos::setXEsquerda(float novaPosicao)
+{
+    if(this->x!=novaPosicao){
+        this->x--;
+        return false;
+    }
+
+    if(this->x==novaPosicao){
+        return true;
+    }
+}
+
+bool Cubos::setZFrente(float novaPosicao)
+{
+    if(this->z!=novaPosicao){
+        this->z++;
+        return true;
+    }
+    if(this->z==novaPosicao){
+        return false;
+    }
+}
+
+bool Cubos::setZTras(float novaPosicao)
+{
+    if(this->z!=novaPosicao){
+        this->z--;
+        return true;
+    }
+    if(this->z==novaPosicao){
+        return false;
+    }
+}
+
+bool Cubos::resetZTras()
+{
+    if(this->z!=0){
+        this->z--;
+        std::cout << this->z << std::endl;
+    }
+}
+
+bool Cubos::resetZFrente()
+{
+    if(this->z!=0){
+        this->z++;
+    }
+}

@@ -13,12 +13,51 @@ float tmpI;
 float tmpJ;
 bool swapping = true;
 bool trocarPosicoes = false;
+bool terminouTroca = false;
 
 double rotationX = 20.0;
 double rotationY = 20.0;
 Cubos teste[tamanho];
 
 using namespace std;
+
+
+void Anima(int value)
+{
+    if(!swapping){
+       static bool passo1 = false;
+       static bool passo2 = false;
+        cout << "Entrou" << endl;
+        cout << "TMPI:" << tmpI << endl;
+        cout << "TPMJ"  << tmpJ << endl;
+        if(teste[i].setZFrente(5) && !passo1){
+            cout << teste[i].getZ() << endl;
+
+        }else{
+            passo1 = true;
+            teste[i].setXEsquerda(tmpJ);
+
+        }
+
+        if(teste[j].setZTras(-5) && !passo2){
+        }else{
+            passo2 = true;
+            teste[j].setXDireita(tmpI);
+
+        }
+
+        if( passo1 && passo2 &&  (teste[i]).setXEsquerda(tmpJ) && teste[j].setXDireita(tmpI) ){
+            teste[j].resetZFrente();
+
+        }
+
+
+        glutPostRedisplay();
+        glutTimerFunc(100,Anima,1);
+    }
+
+}
+
 
 void ordenacao()
 {
@@ -29,17 +68,23 @@ void ordenacao()
 
         while ((j >= 0) && (atual < teste[j].getData()))
         {
-            //Se tiver swap,saia;
+            //Se tiver troca,saia;
             swapping = false;
+            //Guarda as posições
             trocarPosicoes = true;
-
+            break;
 
             //                original[j + 1] = original[j];
             teste[j+1].setData(teste[j].getData());
 
             j = j - 1;
         }
-        //Se tiver swap,saia;
+        //Se tiver troca,saia;
+        if(!swapping){
+
+            break;
+        }
+
         //            original[j + 1] = atual;
         teste[j+1].setData(atual);
     }
@@ -76,21 +121,12 @@ void Desenha(void)
     if(trocarPosicoes){
         tmpI = teste[i].getX();
         tmpJ = teste[j].getX();
-        cout << "TMPI:" << tmpI << endl;
-        cout << "TPMJ"  << tmpJ << endl;
+
         trocarPosicoes = false;
     }
 
-    if(swapping){
-
-
-    }
-
-
 
     glFlush();
-
-
 }
 
 void Mouse_Motion(int x,int y)
@@ -178,6 +214,7 @@ int main(int argc, char *argv[])
     glutInitWindowPosition(100,100);
     glutCreateWindow("Insert sort");
     glutDisplayFunc(Desenha);
+    glutTimerFunc(100, Anima, 1);
     glutMouseFunc(Mouse_Press);
     glutMotionFunc(Mouse_Motion);
     Inicializa();

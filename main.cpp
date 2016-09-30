@@ -3,13 +3,13 @@
 #define LARGURA 600
 #define ALTURA 600
 
-
+const int tamanho = 4;
 int last_press_x = 0;
 int last_press_y = 0;
 
 double rotationX = 20.0;
 double rotationY = 20.0;
-
+Cubos teste[tamanho];
 
 using namespace std;
 
@@ -27,10 +27,10 @@ void Desenha(void)
 
     glRotatef(rotationY, 1.0, 0.0, 0.0);
     glRotatef(rotationX, 0.0, 1.0, 0.0);
-    Cubos *cube = new Cubos(6);
-    cube->inicializarCubos();
 
-    //    glutSolidCube(1)
+    for(int i = 0 ; i < tamanho ; i++){
+        teste[i].drawCube();
+    }
     glFlush();
 
 
@@ -94,7 +94,7 @@ void Inicializa(void)
     //Modo de projecao ortogonal
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(80.0f,((GLfloat)LARGURA/(GLfloat)ALTURA), 1, 600.0f);
+    gluPerspective(100.0f,((GLfloat)LARGURA/(GLfloat)ALTURA), 1, 300.0f);
 
     /* Habilita o uso de iluminação */
     glEnable(GL_LIGHTING);
@@ -110,6 +110,11 @@ void Inicializa(void)
 
 int main(int argc, char *argv[])
 {
+    int original[tamanho] = {4,3,2,1};
+    teste[0] = Cubos(original[0],tamanho * -5 ,0,0);
+    for(int i = 1 ; i < tamanho ; ++i){
+        teste[i] = Cubos(original[i],teste[i-1].getX() + 5 ,teste[i-1].getY(),teste[i-1].getZ());
+    }
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(LARGURA,ALTURA);

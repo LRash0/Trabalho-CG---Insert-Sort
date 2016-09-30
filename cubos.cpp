@@ -120,7 +120,6 @@ bool Cubos::resetZTras()
 {
     if(this->z!=0){
         this->z--;
-        std::cout << this->z << std::endl;
     }
 }
 

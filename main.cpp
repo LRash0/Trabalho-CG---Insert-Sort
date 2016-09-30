@@ -12,9 +12,12 @@ int j = 0;
 float tmpI;
 float tmpJ;
 bool swapping = true;
+bool teveTroca = false;
 bool trocarPosicoes = false;
 bool terminouTroca = false;
-
+bool resetouZ = false;
+bool passo1 = false;
+bool passo2 = false;
 double rotationX = 20.0;
 double rotationY = 20.0;
 Cubos teste[tamanho];
@@ -24,15 +27,15 @@ using namespace std;
 
 void Anima(int value)
 {
-    if(!swapping){
-       static bool passo1 = false;
-       static bool passo2 = false;
+    if(!terminouTroca) {
+
         cout << "Entrou" << endl;
         cout << "TMPI:" << tmpI << endl;
         cout << "TPMJ"  << tmpJ << endl;
+
+
         if(teste[i].setZFrente(5) && !passo1){
             cout << teste[i].getZ() << endl;
-
         }else{
             passo1 = true;
             teste[i].setXEsquerda(tmpJ);
@@ -47,22 +50,37 @@ void Anima(int value)
         }
 
         if( passo1 && passo2 &&  (teste[i]).setXEsquerda(tmpJ) && teste[j].setXDireita(tmpI) ){
-            teste[j].resetZFrente();
+            terminouTroca = true;
+            resetouZ = true;
+            cout << teste[i].getZ() << endl;
+
 
         }
-
-
-        glutPostRedisplay();
-        glutTimerFunc(100,Anima,1);
     }
+
+
+    if(resetouZ){
+        teste[j].resetZFrente();
+        teste[i].resetZTras();
+
+        if(teste[i].getZ() ==0 && teste[j].getZ() == 0){
+            resetouZ = false;
+        }
+    }
+
+
+    glutPostRedisplay();
+    glutTimerFunc(100,Anima,1);
 
 }
 
 
 void ordenacao()
 {
-    for (;i < tamanho; i++)
+//    for (;i < tamanho; i++)
+    while(i<tamanho)
     {
+
         int atual = teste[i].getData();
         j = i - 1;
 
@@ -72,8 +90,11 @@ void ordenacao()
             swapping = false;
             //Guarda as posições
             trocarPosicoes = true;
-            break;
-
+            if(!swapping && trocarPosicoes){
+                cout << "Entrou aqui com valor de i = " << i << endl;
+                teveTroca = true;
+                break;
+            }
             //                original[j + 1] = original[j];
             teste[j+1].setData(teste[j].getData());
 
@@ -87,6 +108,8 @@ void ordenacao()
 
         //            original[j + 1] = atual;
         teste[j+1].setData(atual);
+        ++i;
+
     }
 
 }
@@ -115,6 +138,7 @@ void Desenha(void)
     //Enquanto não tiver swap,faça;
     if(swapping){
         ordenacao();
+        cout << "Entrou aqui 2 " << endl;
     }
 
     //Guardar as posicoes para trocar
@@ -123,6 +147,25 @@ void Desenha(void)
         tmpJ = teste[j].getX();
 
         trocarPosicoes = false;
+        terminouTroca = false;
+    }
+
+    if(!swapping && terminouTroca && !resetouZ){
+        //cout << "Entrou aqui" << endl;
+        if(teveTroca){
+            int tmp = teste[i].getData();
+            teste[j+1].setData(teste[j].getData());
+            j = j - 1;
+            teste[j+1].setData(tmp);
+            teveTroca = false;
+        }
+        swapping = true;
+        cout << "i:" << i << endl;
+        for(int k = 0 ; k < tamanho ; ++k){
+            cout << teste[k].getData() << endl;
+
+        }
+        getchar();
     }
 
 
@@ -205,8 +248,8 @@ int main(int argc, char *argv[])
 {
     int original[tamanho] = {4,3,2,1};
     teste[0] = Cubos(original[0],tamanho * -5 ,0,0);
-    for(int i = 1 ; i < tamanho ; ++i){
-        teste[i] = Cubos(original[i],teste[i-1].getX() + 5 ,teste[i-1].getY(),teste[i-1].getZ());
+    for(int k = 1 ; k < tamanho ; ++k){
+        teste[k] = Cubos(original[k],teste[k-1].getX() + 5 ,teste[k-1].getY(),teste[k-1].getZ());
     }
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);

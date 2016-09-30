@@ -8,6 +8,7 @@ class Cubos
         friend void insertSort(Cubos v[],int tamanho);
         Cubos();
         Cubos(int,float,float,float);
+        void mostrasDatas();
         float x,y,z,posX,posY,posZ;
         void setTranslateFrente(float,float,float);
         void setTranslateTras(float,float,float);

@@ -4,23 +4,37 @@
 #define LARGURA 600
 #define ALTURA 600
 
-const int tamanho = 4;
+//Criar vetor parelelo para ordenar e depois desenhar
+//Tentar fazer tudo na função Desenha()
+
+const int tamanho = 5;
+int original[tamanho] = {4,3,2,1,0};
 int last_press_x = 0;
 int last_press_y = 0;
 int i = 1;
 int j = 0;
+int mi = 1;
+int bj = tamanho - 1;
+int pi;
+int pj;
+int pInicial[tamanho][tamanho];
+int pFinal[tamanho][tamanho];
 float tmpI;
 float tmpJ;
+
 bool swapping = true;
 bool teveTroca = false;
 bool trocarPosicoes = false;
-bool terminouTroca = false;
+bool terminouTroca = true;
 bool resetouZ = false;
 bool passo1 = false;
 bool passo2 = false;
+
 double rotationX = 20.0;
 double rotationY = 20.0;
+
 Cubos teste[tamanho];
+
 
 using namespace std;
 
@@ -34,25 +48,27 @@ void Anima(int value)
         cout << "TPMJ"  << tmpJ << endl;
 
 
-        if(teste[i].setZFrente(5) && !passo1){
-            cout << teste[i].getZ() << endl;
+        if(teste[pi].setZFrente(5) && !passo1){
+            cout << "Flag 1" << endl;
+            cout << teste[pi].getZ() << endl;
+            getchar();
         }else{
             passo1 = true;
-            teste[i].setXEsquerda(tmpJ);
+            teste[pi].setXEsquerda(tmpJ);
 
         }
 
-        if(teste[j].setZTras(-5) && !passo2){
+        if(teste[pj].setZTras(-5) && !passo2){
         }else{
             passo2 = true;
-            teste[j].setXDireita(tmpI);
+            teste[pj].setXDireita(tmpI);
 
         }
 
-        if( passo1 && passo2 &&  (teste[i]).setXEsquerda(tmpJ) && teste[j].setXDireita(tmpI) ){
+        if( passo1 && passo2 &&  (teste[pi]).setXEsquerda(tmpJ) && teste[pj].setXDireita(tmpI) ){
             terminouTroca = true;
             resetouZ = true;
-            cout << teste[i].getZ() << endl;
+            cout << teste[pi].getZ() << endl;
 
 
         }
@@ -60,10 +76,10 @@ void Anima(int value)
 
 
     if(resetouZ){
-        teste[j].resetZFrente();
-        teste[i].resetZTras();
+        teste[pj].resetZFrente();
+        teste[pi].resetZTras();
 
-        if(teste[i].getZ() ==0 && teste[j].getZ() == 0){
+        if(teste[pi].getZ() ==0 && teste[pj].getZ() == 0){
             resetouZ = false;
         }
     }
@@ -77,7 +93,7 @@ void Anima(int value)
 
 void ordenacao()
 {
-//    for (;i < tamanho; i++)
+/* for (;i < tamanho; i++)
     while(i<tamanho)
     {
 
@@ -109,8 +125,38 @@ void ordenacao()
         //            original[j + 1] = atual;
         teste[j+1].setData(atual);
         ++i;
+    }*/
+
+    for (i = 1; i < tamanho; i++)
+        {
+            int atual = original[i];
+            j = i - 1;
+
+            while ((j >= 0) && (atual < original[j]))
+            {
+//                cout << "Valor de i: " << i << endl;
+//                cout << "indice[j]: " << j << endl << "trocou valor com indice[j+1]: " << j+1 << endl;
+//                cout << "Valor de indice [j] " << original[j] << endl << "Valor de indice[j+1] " << original[j+1] << endl;
+                pInicial[i][j] = j + 1;
+                pFinal[i][j] =  j;
+//                cout << "pInicial[" << i << "][" << j << "]: " <<   pInicial[i][j] << endl;
+//                cout << "pFinal["   << i << "][" << j << "]: " <<  pFinal[i][j] << endl;
+
+
+                original[j + 1] = original[j];
+                j = j - 1;
+            }
+
+            original[j + 1] = atual;
+        }
+
+    if(i==tamanho){
+        cout << "Flag 10000" << endl;
+        swapping = false;
 
     }
+
+
 
 }
 
@@ -131,45 +177,104 @@ void Desenha(void)
     glRotatef(rotationY, 1.0, 0.0, 0.0);
     glRotatef(rotationX, 0.0, 1.0, 0.0);
 
-    for(int i = 0 ; i < tamanho ; i++){
-        teste[i].drawCube();
+    for(int y = 0 ; y < tamanho ; y++){
+        teste[y].drawCube();
     }
 
     //Enquanto não tiver swap,faça;
     if(swapping){
         ordenacao();
-        cout << "Entrou aqui 2 " << endl;
+        trocarPosicoes = true;
     }
 
     //Guardar as posicoes para trocar
-    if(trocarPosicoes){
-        tmpI = teste[i].getX();
-        tmpJ = teste[j].getX();
 
-        trocarPosicoes = false;
-        terminouTroca = false;
+    if(trocarPosicoes) {
+
+        cout << "Flag 100" << endl;
+        cout << "bj:" << bj << endl;
+        getchar();
+
+        if(mi < tamanho){
+            cout << "Flag 101" << endl;
+            getchar();
+        if(bj>-1) {
+            cout << "Flag 102"  << endl;
+            getchar();
+
+            if(pInicial[mi][bj]!=-1 && pFinal[mi][bj]!=-1){
+                cout << "Flag 104" << endl;
+                cout << "bj:" << bj << endl;
+                cout << "bi:" << mi << endl;
+                cout << "pi:" << pInicial[mi][bj] << endl;
+                cout << "pj:" << pFinal[mi][bj] << endl;
+                pi = pInicial[mi][bj];
+                pj = pFinal[mi][bj];
+                tmpI = teste[pi].getX();
+                tmpJ = teste[pj].getX();
+                cout << "tmpI: " << tmpI << endl;
+                cout << "tmpJ: " << tmpJ << endl;
+                trocarPosicoes = false;
+                terminouTroca = false;
+                getchar();
+            }
+        }
+//            bi++;
+//            j = tamanho - 1;
+        if(bj!=-1){
+            cout << "pi:" << pInicial[mi][bj] << endl;
+            cout << "pj:" << pFinal[mi][bj] << endl;
+            bj--;
+            cout << "Flag 103" << endl;
+        }
+
+        if(bj==-1){
+            cout << "mi:" << mi << endl;
+            cout << "Flag 105" << endl;
+            mi++;
+            getchar();
+            bj = tamanho - 1;
+        }
+
+//        tmpI = teste[i].getX();
+//        tmpJ = teste[j].getX();
+
+
+
     }
 
-    if(!swapping && terminouTroca && !resetouZ){
-        //cout << "Entrou aqui" << endl;
-        if(teveTroca){
-            int tmp = teste[i].getData();
-            teste[j+1].setData(teste[j].getData());
-            j = j - 1;
-            teste[j+1].setData(tmp);
+    } else{
+        cout << "Entrou aqui. Nao sai mais " << endl;
+    }
+
+    if(!swapping && terminouTroca && !resetouZ) {
+        cout << "Flag 106" << endl;
+//            int tmp = teste[i].getData();
+//            int tmp2 = teste[j+1].getData();
+//            int tmp3 = teste[j].getData();
+//            cout << "tmp: " << tmp << endl;
+//            cout << "teste[j+1]: " << tmp2 << endl;
+//            cout << "teste[j]: " << tmp3 << endl;
+//            teste[j+1].setData(teste[j].getData());
+//            teste[j].setData(tmp);
+//            cout << "j: " << j <<  endl;
             teveTroca = false;
+            trocarPosicoes = true;
         }
-        swapping = true;
-        cout << "i:" << i << endl;
-        for(int k = 0 ; k < tamanho ; ++k){
+//        swapping = true;
+//        cout << "i:" << i << endl;
+        /*for(int k = 0 ; k < tamanho ; ++k) {
             cout << teste[k].getData() << endl;
 
-        }
-        getchar();
-    }
+        }*/
+//        getchar();
+//    }
 
 
     glFlush();
+
+
+
 }
 
 void Mouse_Motion(int x,int y)
@@ -246,11 +351,21 @@ void Inicializa(void)
 
 int main(int argc, char *argv[])
 {
-    int original[tamanho] = {4,3,2,1};
+
     teste[0] = Cubos(original[0],tamanho * -5 ,0,0);
     for(int k = 1 ; k < tamanho ; ++k){
         teste[k] = Cubos(original[k],teste[k-1].getX() + 5 ,teste[k-1].getY(),teste[k-1].getZ());
     }
+
+    //Inicializando vetor auxiliar
+
+    for(int i = 0 ; i < tamanho ; i++){
+        for(int j = 0 ; j < tamanho ; j++){
+            pInicial[i][j] = -1;
+            pFinal[i][j] = -1;
+        }
+    }
+
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(LARGURA,ALTURA);

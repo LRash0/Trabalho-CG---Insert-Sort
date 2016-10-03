@@ -129,3 +129,18 @@ bool Cubos::resetZFrente()
         this->z++;
     }
 }
+
+void Cubos::setX(float x)
+{
+    this->x = x;
+}
+
+void Cubos::setY(float y)
+{
+    this->y = y;
+}
+
+void Cubos::setZ(float z)
+{
+    this->z = z;
+}

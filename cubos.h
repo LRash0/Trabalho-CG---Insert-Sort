@@ -13,6 +13,9 @@ class Cubos
         void setTranslateFrente(float,float,float);
         void setTranslateTras(float,float,float);
         void setData(int);
+        void setX(float);
+        void setY(float);
+        void setZ(float);
         void insertSort();
         void escrever();
         void drawCube();

@@ -144,7 +144,7 @@ void ordenacao()
     }
 
     if(i==tamanho){
-        cout << "Flag 10000" << endl;
+
         swapping = false;
 
     }
@@ -322,6 +322,36 @@ void Inicializa(void)
 
 }
 
+void GerenciaTeclado(unsigned char key, int x, int y)
+{
+    switch (key) {
+        case 'R':
+        case 'r':/* muda a cor corrente para vermelho */
+            glColor3f(1.0f, 0.0f, 0.0f);
+            break;
+
+        case 'G':
+        case 'g':/* muda a cor corrente para verde */
+            glColor3f(0.0f, 1.0f, 0.0f);
+            break;
+
+        case 'B':
+        case 'b':/* muda a cor corrente para azul */
+            glColor3f(0.0f, 0.0f, 1.0f);
+            break;
+
+        case 'q':
+            exit(1);
+            break;
+    }
+
+    /* Necessário chamar toda vez que se faz uma alteração ou evento na janela
+     * Indica a funcao glutMainLoop a chamar glutDisplayFunc com as alterações */
+    glutPostRedisplay();
+}
+
+
+
 int main(int argc, char *argv[])
 {
 
@@ -345,6 +375,7 @@ int main(int argc, char *argv[])
     glutInitWindowPosition(100,100);
     glutCreateWindow("Insert sort");
     glutDisplayFunc(Desenha);
+    glutKeyboardFunc(GerenciaTeclado);
     glutTimerFunc(100, Anima, 1);
     glutMouseFunc(Mouse_Press);
     glutMotionFunc(Mouse_Motion);

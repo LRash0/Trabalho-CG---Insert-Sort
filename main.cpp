@@ -7,11 +7,11 @@
 //Criar vetor parelelo para ordenar e depois desenhar
 //Tentar fazer tudo na função Desenha()
 
-const int tamanho = 8;
-//int original[tamanho] = {4,3,2,1};
+const int tamanho = 4;
+int original[tamanho] = {4,3,2,1};
 int pInicial[tamanho][tamanho];
 int pFinal[tamanho][tamanho];
-int original[tamanho] = {6,5,3,1,8,7,2,4};
+//int original[tamanho] = {6,5,3,1,8,7,2,4};
 int last_press_x = 0;
 int last_press_y = 0;
 int i = 1;
@@ -42,19 +42,45 @@ Cubos teste[tamanho];
 using namespace std;
 
 
+void parametrosIluminacao()
+{
+    /* Parâmetros para a Luz GL_LIGHT0 sendo uma fonte de Luz Pontual */
+    GLfloat luzAmbiente[4]={0.0, 0.0, 1.0, 1.0};	/* cor azul */
+    GLfloat luzDifusa[4]={1.0, 1.0, 1.0, 1.0};	  	/* cor branca */
+    GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0}; 	/* cor branca - brilho */
+    GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};	/* Fonte de Luz Pontual */
+
+    /* Define os parâmetros da luz de número 0 (Luz Pontual) */
+    glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+    glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+    glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+
+    /* Ativa o uso de uma fonte de luz ambiente */
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+
+    /* Características do material */
+    GLfloat ka[4]={0.11, 0.06, 0.11, 1.0};		/* Reflete porcentagens da cor ambiente */
+    GLfloat kd[4]={0.4, 0.4, 0.7, 1.0};		/* Reflete porcentagens da cor difusa */
+    GLfloat ks[4]={1.0, 1.0, 1.0, 1.0};		/* Reflete porcentagens da cor especular */
+    GLfloat shininess = 60.0;
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ka);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, kd);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, ks); /* Refletância do material */
+    glMaterialf(GL_FRONT, GL_SHININESS, shininess);   /* Concentração do brilho */
+}
+
+
+
 void Anima(int value)
 {
     if(!terminouTroca) {
 
-//        cout << "Entrou" << endl;
-//        cout << "TMPI:" << tmpI << endl;
-//        cout << "TPMJ"  << tmpJ << endl;
-
-
         if(teste[pi].setZFrente(5) && !passo1){
-//            cout << "Flag 1" << endl;
+
             cout << teste[pi].getZ() << endl;
-//            getchar();
+
         }else{
             passo1 = true;
             teste[pi].setXEsquerda(tmpJ);
@@ -97,62 +123,25 @@ void Anima(int value)
 
 void ordenacao()
 {
-/* for (;i < tamanho; i++)
-    while(i<tamanho)
+    for (i = 1; i < tamanho; i++)
     {
-
-        int atual = teste[i].getData();
+        int atual = original[i];
         j = i - 1;
 
-        while ((j >= 0) && (atual < teste[j].getData()))
+        while ((j >= 0) && (atual < original[j]))
         {
-            //Se tiver troca,saia;
-            swapping = false;
-            //Guarda as posições
-            trocarPosicoes = true;
-            if(!swapping && trocarPosicoes){
-                cout << "Entrou aqui com valor de i = " << i << endl;
-                teveTroca = true;
-                break;
-            }
-            //                original[j + 1] = original[j];
-            teste[j+1].setData(teste[j].getData());
 
+            pInicial[i][j] = j + 1;
+            pFinal[i][j] =  j;
+
+
+
+            original[j + 1] = original[j];
             j = j - 1;
         }
-        //Se tiver troca,saia;
-        if(!swapping){
 
-            break;
-        }
-
-        //            original[j + 1] = atual;
-        teste[j+1].setData(atual);
-        ++i;
-    }*/
-
-    for (i = 1; i < tamanho; i++)
-        {
-            int atual = original[i];
-            j = i - 1;
-
-            while ((j >= 0) && (atual < original[j]))
-            {
-//                cout << "Valor de i: " << i << endl;
-//                cout << "indice[j]: " << j << endl << "trocou valor com indice[j+1]: " << j+1 << endl;
-//                cout << "Valor de indice [j] " << original[j] << endl << "Valor de indice[j+1] " << original[j+1] << endl;
-                pInicial[i][j] = j + 1;
-                pFinal[i][j] =  j;
-//                cout << "pInicial[" << i << "][" << j << "]: " <<   pInicial[i][j] << endl;
-//                cout << "pFinal["   << i << "][" << j << "]: " <<  pFinal[i][j] << endl;
-
-
-                original[j + 1] = original[j];
-                j = j - 1;
-            }
-
-            original[j + 1] = atual;
-        }
+        original[j + 1] = atual;
+    }
 
     if(i==tamanho){
         cout << "Flag 10000" << endl;
@@ -178,6 +167,9 @@ void Desenha(void)
               0.0,0.0,0.0,
               0.0,0.1,0.0);
 
+
+    parametrosIluminacao();
+
     glRotatef(rotationY, 1.0, 0.0, 0.0);
     glRotatef(rotationX, 0.0, 1.0, 0.0);
 
@@ -195,74 +187,42 @@ void Desenha(void)
 
     if(trocarPosicoes) {
 
-//        cout << "Flag 100" << endl;
-//        cout << "bj:" << bj << endl;
-//        getchar();
-
         if(mi < tamanho){
-//            cout << "Flag 101" << endl;
-//            getchar();
-        if(bj>-1) {
-//            cout << "Flag 102"  << endl;
-//            getchar();
 
-            if(pInicial[mi][bj]!=-1 && pFinal[mi][bj]!=-1){
-                cout << "Flag 104" << endl;
-                cout << "p[" << mi << "][" << bj << "]" << endl;
-                cout << "pi: " << pInicial[mi][bj] << endl;
-                cout << "pj: " << pFinal[mi][bj] << endl;
-                pi = pInicial[mi][bj];
-                pj = pFinal[mi][bj];
-                tmpI = teste[pi].getX();
-                tmpJ = teste[pj].getX();
-                cout << "tmpI: " << tmpI << endl;
-                cout << "tmpJ: " << tmpJ << endl;
-                trocarPosicoes = false;
-                terminouTroca = false;
-                getchar();
+            if(bj>-1) {
+
+                if(pInicial[mi][bj]!=-1 && pFinal[mi][bj]!=-1){
+
+                    pi = pInicial[mi][bj];
+                    pj = pFinal[mi][bj];
+                    tmpI = teste[pi].getX();
+                    tmpJ = teste[pj].getX();
+
+                    trocarPosicoes = false;
+                    terminouTroca = false;
+
+                }
             }
-        }
-//            bi++;
-//            j = tamanho - 1;
-        if(bj!=-1){
-//            cout << "pi:" << pInicial[mi][bj] << endl;
-//            cout << "pj:" << pFinal[mi][bj] << endl;
-            bj--;
-//            cout << "Flag 103" << endl;
-        }
 
-        if(bj==-1){
-//            cout << "mi:" << mi << endl;
-//            cout << "Flag 105" << endl;
-            mi++;
-//            getchar();
-            bj = tamanho - 1;
-        }
+            if(bj!=-1){
 
-//        tmpI = teste[i].getX();
-//        tmpJ = teste[j].getX();
+                bj--;
 
+            }
 
+            if(bj==-1){
 
-    }
+                mi++;
+
+                bj = tamanho - 1;
+            }
+       }
 
     } else{
-//        cout << "Entrou aqui. Nao sai mais " << endl;
+
     }
 
     if(terminouTroca && trocarValores) {
-        cout << "Flag 106" << endl;
-        cout << "Antes" << endl;
-        cout << "teste[" << pj << "]: " << teste[pj].getData() << endl;
-        cout << "x: " << teste[pj].getX() << endl;
-        cout << "y: " << teste[pj].getY() << endl;
-        cout << "z: " << teste[pj].getZ() << endl;
-
-        cout << "teste[" << pi << "]: " << teste[pi].getData() << endl;
-        cout << "x: " << teste[pi].getX() << endl;
-        cout << "y: " << teste[pi].getY() << endl;
-        cout << "z: " << teste[pi].getZ() << endl;
-
 
         float tmpX = teste[pj].getX();
         float tmpY = teste[pj].getY();
@@ -275,38 +235,17 @@ void Desenha(void)
         teste[pi].setX(tmpX);
         teste[pi].setY(tmpY);
         teste[pi].setZ(tmpZ);
-        cout << "Depois" << endl;
-        cout << "teste[" << pj << "]: " << teste[pj].getData() << endl;
-        cout << "x: " << teste[pj].getX() << endl;
-        cout << "y: " << teste[pj].getY() << endl;
-        cout << "z: " << teste[pj].getZ() << endl;
-
-        cout << "teste[" << pi << "]: " << teste[pi].getData() << endl;
-        cout << "teste[" << pi << "]: " << teste[pi].getData() << endl;
-        cout << "x: " << teste[pi].getX() << endl;
-        cout << "y: " << teste[pi].getY() << endl;
-        cout << "z: " << teste[pi].getZ() << endl;
 
         int tmp = teste[pj].getData();
         teste[pj].setData(teste[pi].getData());
         teste[pi].setData(tmp);
 
-        getchar();
 
 
-//            int tmp = teste[i].getData();
-//            int tmp2 = teste[j+1].getData();
-//            int tmp3 = teste[j].getData();
-//            cout << "tmp: " << tmp << endl;
-//            cout << "teste[j+1]: " << tmp2 << endl;
-//            cout << "teste[j]: " << tmp3 << endl;
-//            teste[j+1].setData(teste[j].getData());
-//            teste[j].setData(tmp);
-//            cout << "j: " << j <<  endl;
-            teveTroca = false;
-            trocarPosicoes = true;
-            trocarValores = false;
-        }
+        teveTroca = false;
+        trocarPosicoes = true;
+        trocarValores = false;
+    }
 
     glFlush();
 }

@@ -25,6 +25,7 @@ class Cubos
         bool setZTras(float);
         bool resetZTras();
         bool resetZFrente();
+        bool escreve;
         float getX();
         float getY();
         float getZ();

@@ -19,6 +19,7 @@ Cubos::Cubos(int data,float x,float y,float z)
     this->y = y;
     this->z = z;
     this->posX = this->posY = this->posZ = 0;
+    escreve = true;
 
 
 }
@@ -36,11 +37,13 @@ void Cubos::drawCube()
 
 void Cubos::escrever()
 {
-    std::string s = std::to_string(this->getData());
-    char const * pchar = s.c_str();
-    glRasterPos3f(0.0,this->getY() + 2,this->getZ());
-    for(unsigned  int i = 0 ; i < s.size() ; ++i){
+    if(escreve){
+        std::string s = std::to_string(this->getData());
+        char const * pchar = s.c_str();
+        glRasterPos3f(0.0,this->getY() + 2,this->getZ());
+        for(unsigned  int i = 0 ; i < s.size() ; ++i){
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10,pchar[i]);
+        }
     }
 
 }

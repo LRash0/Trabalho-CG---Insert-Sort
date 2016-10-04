@@ -79,8 +79,6 @@ void Anima(int value)
 
         if(teste[pi].setZFrente(5) && !passo1){
 
-            cout << teste[pi].getZ() << endl;
-
         }else{
             passo1 = true;
             teste[pi].setXEsquerda(tmpJ);
@@ -97,9 +95,6 @@ void Anima(int value)
         if( passo1 && passo2 &&  (teste[pi]).setXEsquerda(tmpJ) && teste[pj].setXDireita(tmpI) ){
             terminouTroca = true;
             resetouZ = true;
-            cout << teste[pi].getZ() << endl;
-
-
         }
     }
 
@@ -326,21 +321,26 @@ void GerenciaTeclado(unsigned char key, int x, int y)
 {
     switch (key) {
         case 'R':
-        case 'r':/* muda a cor corrente para vermelho */
-            glColor3f(1.0f, 0.0f, 0.0f);
+        case 'r':/* Exibi os números na tela */
+        for(int l = 0 ; l < tamanho ; l++){
+            teste[l].escreve = true;
+        }
             break;
 
-        case 'G':
-        case 'g':/* muda a cor corrente para verde */
-            glColor3f(0.0f, 1.0f, 0.0f);
+        case 'P':
+        case 'p':/*Pausa o programa*/
+            cout << "Aperter enter para continuar" << endl;
+            getchar();
             break;
 
         case 'B':
-        case 'b':/* muda a cor corrente para azul */
-            glColor3f(0.0f, 0.0f, 1.0f);
+        case 'b':/*Esconde os números da tela*/
+            for(int l = 0 ; l < tamanho ; l++){
+                teste[l].escreve = false;
+            }
             break;
 
-        case 'q':
+        case 'q': /*Sai do programa*/
             exit(1);
             break;
     }
